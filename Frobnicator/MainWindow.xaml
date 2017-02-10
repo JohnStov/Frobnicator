@@ -9,9 +9,15 @@
         Title="Frobnicator" Height="350" Width="525">
     
     <mui:ModernWindow.MenuLinkGroups>
+        <mui:LinkGroup DisplayName="Playback" >
+            <mui:LinkGroup.Links>
+                <mui:Link DisplayName="Play" Source="/Pages/Playback.xaml" />
+            </mui:LinkGroup.Links>
+        </mui:LinkGroup>
         <mui:LinkGroup DisplayName="Setup" >
             <mui:LinkGroup.Links>
                 <mui:Link DisplayName="MIDI" Source="/Pages/MidiSetup.xaml" />
+                <mui:Link DisplayName="Audio" Source="/Pages/AudioSetup.xaml" />
             </mui:LinkGroup.Links>
         </mui:LinkGroup>
     </mui:ModernWindow.MenuLinkGroups>

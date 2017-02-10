@@ -71,12 +71,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\AudioSetup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Playback.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Pages\MidiSetup.xaml.cs">
       <DependentUpon>MidiSetup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\AudioSetup.xaml.cs">
+      <DependentUpon>AudioSetup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Playback.xaml.cs">
+      <DependentUpon>Playback.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ViewModels\AudioSetupViewModel.cs" />
     <Compile Include="ViewModels\MidiSetupViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
