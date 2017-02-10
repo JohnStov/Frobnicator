@@ -53,6 +53,8 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="AudioOutput.fs" />
     <Compile Include="MidiInput.fs" />
+    <Compile Include="Streams.fs" />
+    <Compile Include="Playback.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
     <None Include="paket.references" />

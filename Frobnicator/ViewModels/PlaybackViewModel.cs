@@ -1,23 +1,20 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using FirstFloor.ModernUI.Presentation;
-using Frobnicator.Annotations;
 
 namespace Frobnicator.ViewModels
 {
-   public class PlaybackViewModel : INotifyPropertyChanged
+   public class PlaybackViewModel
    {
-      public event PropertyChangedEventHandler PropertyChanged;
+      private readonly Playback.PlaybackDevice playback = new Playback.PlaybackDevice(0, 44100.0);
 
-      public ICommand StartCommand { get; } = new RelayCommand(_ => MessageBox.Show("Start"));
-      public ICommand StopCommand { get; } = new RelayCommand(_ => MessageBox.Show("Stop"));
-
-      [NotifyPropertyChangedInvocator]
-      protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+      public ICommand StartCommand
       {
-         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+         get { return new RelayCommand(_ => playback.start(), _ => !playback.isPlaying()); }
+      }
+
+      public ICommand StopCommand
+      {
+         get { return new RelayCommand(_ => playback.stop(), _ => playback.isPlaying()); }
       }
    }
 }
