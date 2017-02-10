@@ -11,7 +11,7 @@
     <mui:ModernWindow.MenuLinkGroups>
         <mui:LinkGroup DisplayName="Setup" >
             <mui:LinkGroup.Links>
-                <mui:Link DisplayName="MIDI" Source="/MidiSetup.xaml" />
+                <mui:Link DisplayName="MIDI" Source="/Pages/MidiSetup.xaml" />
             </mui:LinkGroup.Links>
         </mui:LinkGroup>
     </mui:ModernWindow.MenuLinkGroups>

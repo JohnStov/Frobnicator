@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Frobnicator.Page1"
+﻿<UserControl x:Class="Frobnicator.Pages.MidiSetup"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,6 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Style="{StaticResource ContentRoot}">
-        <TextBlock Text="Hello Modern UI!" />
+        <TextBlock HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="88" Text="MIDI In Device" Height="22"/>
+        <ComboBox HorizontalAlignment="Left" Margin="88,10,0,0" VerticalAlignment="Top" Width="170" ItemsSource="{Binding DeviceNames}"/>
     </Grid>
 </UserControl>
