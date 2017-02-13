@@ -51,10 +51,9 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="AudioDevices.fs" />
-    <Compile Include="MidiInput.fs" />
     <Compile Include="Streams.fs" />
-    <Compile Include="Playback.fs" />
+    <Compile Include="AudioOutput.fs" />
+    <Compile Include="MidiInput.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
     <None Include="paket.references" />

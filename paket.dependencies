@@ -4,5 +4,4 @@ nuget ModernUI.WPF
 nuget NAudio
 nuget NSubstitute
 nuget NUnit
-nuget reactiveui
 nuget Should

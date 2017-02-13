@@ -3,13 +3,13 @@ using Frobnicator.ViewModels;
 
 namespace Frobnicator.Pages
 {
-   public partial class MidiSetup : UserControl
-   {
-      public MidiSetup()
-      {
-          InitializeComponent();
+    public partial class MidiSetup : UserControl
+    {
+        public MidiSetup()
+        {
+            InitializeComponent();
 
-          DataContext = new MidiSetupViewModel(new MidiInput.MidiInputs());
-      }
-   }
+            DataContext = new MidiSetupViewModel(new MidiInput.MidiInputs());
+        }
+    }
 }

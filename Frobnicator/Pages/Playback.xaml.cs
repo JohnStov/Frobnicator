@@ -3,16 +3,16 @@ using Frobnicator.ViewModels;
 
 namespace Frobnicator.Pages
 {
-   /// <summary>
-   /// Interaction logic for Playback.xaml
-   /// </summary>
-   public partial class Playback : UserControl
-   {
-      public Playback()
-      {
-         InitializeComponent();
+    /// <summary>
+    ///     Interaction logic for Playback.xaml
+    /// </summary>
+    public partial class Playback : UserControl
+    {
+        public Playback()
+        {
+            InitializeComponent();
 
-         DataContext = new PlaybackViewModel(new global::Playback.PlaybackDevice(0, 44100.0));
-      }
-   }
+            DataContext = new PlaybackViewModel(App.AudioOutput);
+        }
+    }
 }
