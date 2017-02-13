@@ -51,7 +51,7 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="AudioOutput.fs" />
+    <Compile Include="AudioDevices.fs" />
     <Compile Include="MidiInput.fs" />
     <Compile Include="Streams.fs" />
     <Compile Include="Playback.fs" />

@@ -12,7 +12,7 @@ namespace Frobnicator.Pages
       {
          InitializeComponent();
 
-         DataContext = new AudioSetupViewModel();
+         DataContext = new AudioSetupViewModel(new AudioOutput.AudioDevices());
       }
    }
 }

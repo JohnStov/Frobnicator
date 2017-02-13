@@ -12,7 +12,7 @@ namespace Frobnicator.Pages
       {
          InitializeComponent();
 
-         DataContext = new PlaybackViewModel();
+         DataContext = new PlaybackViewModel(new global::Playback.PlaybackDevice(0, 44100.0));
       }
    }
 }

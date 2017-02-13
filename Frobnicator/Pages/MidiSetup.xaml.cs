@@ -7,9 +7,9 @@ namespace Frobnicator.Pages
    {
       public MidiSetup()
       {
-         InitializeComponent();
+          InitializeComponent();
 
-         DataContext = new MidiSetupViewModel();
+          DataContext = new MidiSetupViewModel(new MidiInput.MidiInputs());
       }
    }
 }

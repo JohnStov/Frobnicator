@@ -20,25 +20,32 @@ let getWaveSeqProvider (sampleRate : float) (stream : float seq) =
           WaveFormat.CreateIeeeFloatWaveFormat((int)sampleRate, channelCount) 
     }
 
+type IPlaybackDevice =
+    abstract member Start : unit-> unit
+    abstract member Stop : unit-> unit
+    abstract member Pause : unit-> unit
+    abstract member IsPlaying : unit-> bool
+
 type PlaybackDevice(deviceNumber, sampleRate) =
     let waveOut = new WaveOutEvent()
 
-    member this.start () =
-        let provider = getWaveSeqProvider sampleRate (Streams.sine sampleRate 440.0)    
-        waveOut.DeviceNumber <- deviceNumber
-        waveOut.Init(provider)
-        waveOut.Play()
+    interface IPlaybackDevice with
+        member this.Start () =
+            let provider = getWaveSeqProvider sampleRate (Streams.sine sampleRate 440.0)    
+            waveOut.DeviceNumber <- deviceNumber
+            waveOut.Init(provider)
+            waveOut.Play()
         
-    member this.stop () =
-        waveOut.Stop()
+        member this.Stop () =
+            waveOut.Stop()
     
-    member this.pause () =
-        waveOut.Pause()
+        member this.Pause () =
+            waveOut.Pause()
 
-    member this.isPlaying () =
-        if waveOut <> null then
-            waveOut.PlaybackState = PlaybackState.Playing
-        else
-            false
+        member this.IsPlaying () =
+            if waveOut <> null then
+                waveOut.PlaybackState = PlaybackState.Playing
+            else
+                false
     
     

@@ -9,9 +9,17 @@ namespace Frobnicator.ViewModels
    {
       public event PropertyChangedEventHandler PropertyChanged;
 
-      public IEnumerable<string> DeviceNames => AudioOutput.deviceNames;
+      private readonly AudioOutput.IAudioDevices devices;
+
+      public AudioSetupViewModel(AudioOutput.IAudioDevices devices)
+      {
+         this.devices = devices;
+      }
+
+      public IEnumerable<string> DeviceNames => devices.DeviceNames;
 
       private int selectedItem;
+
       public int SelectedItem
       {
          get { return selectedItem; }
@@ -23,7 +31,7 @@ namespace Frobnicator.ViewModels
       }
 
       [NotifyPropertyChangedInvocator]
-      protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+      private void OnPropertyChanged([CallerMemberName] string propertyName = null)
       {
          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
       }

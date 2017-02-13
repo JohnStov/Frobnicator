@@ -8,45 +8,52 @@ namespace Frobnicator.ViewModels
 {
    public class MidiSetupViewModel : INotifyPropertyChanged
    {
-      public IEnumerable<string> DeviceNames => MidiInput.deviceNames;
+        private MidiInput.IMidiInputs inputs;
+        public MidiSetupViewModel(MidiInput.IMidiInputs inputs)
+        {
+            this.inputs = inputs;
+        }
 
-      private int selectedItem;
-      public int SelectedItem
-      {
-         get { return selectedItem; }
-         set
-         {
-            selectedItem = value;
+        public IEnumerable<string> DeviceNames => inputs.DeviceNames;
+
+        private int selectedItem;
+        public int SelectedItem
+        {
+            get { return selectedItem; }
+            set
+            {
+                selectedItem = value;
             OnPropertyChanged(nameof(SelectedItem));
             OnPropertyChanged(nameof(SelectedManufacturer));
             OnPropertyChanged(nameof(SelectedProductId));
-         }
-      }
+            }
+        }
 
-      public IEnumerable<string> Channels
-         => new[] {"All", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
+        public IEnumerable<string> Channels
+            => new[] {"All", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
 
-      private int selectedChannel;
-      public int SelectedChannel
-      {
-         get { return selectedChannel+1; }
-         set
-         {
-            selectedChannel = value-1;
-            OnPropertyChanged(nameof(SelectedChannel));
-         }
-      }
+        private int selectedChannel;  
 
-      public string SelectedManufacturer => SelectedItem < 0 ? string.Empty : MidiInput.manufacturers[SelectedItem];
+        public int SelectedChannel
+        {
+            get { return selectedChannel+1; }
+            set
+            {
+                selectedChannel = value-1;
+                OnPropertyChanged(nameof(SelectedChannel));
+            }
+        }
 
-      public string SelectedProductId => SelectedItem < 0 ? string.Empty : MidiInput.productIds[SelectedItem].ToString();
+        public string SelectedManufacturer => SelectedItem < 0 ? string.Empty : inputs.Manufacturers[SelectedItem];
 
-      public event PropertyChangedEventHandler PropertyChanged;
+        public string SelectedProductId => SelectedItem < 0 ? string.Empty : inputs.ProductIds[SelectedItem].ToString();
 
-      [NotifyPropertyChangedInvocator]
-      private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-      {
-         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-      }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
    }
 }
