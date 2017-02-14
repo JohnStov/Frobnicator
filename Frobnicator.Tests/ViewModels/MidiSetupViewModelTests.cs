@@ -37,25 +37,32 @@ namespace Frobnicator.Tests.ViewModels
         }
 
         [Test]
-        public void SelectingAnItemChangesSelectedManufacturer()
+        public void ItemSelectionIsPassedThrough()
         {
             var inputs = Substitute.For<MidiInput.IMidiInputs>();
-            inputs.DeviceNames.Returns(new[] {"Device1", "Device2", "Device3"});
-            inputs.Manufacturers.Returns(new[] {"Manufacturer1", "Manufacture2", "Manufacturer3"});
-            var vm = new MidiSetupViewModel(inputs) {SelectedItem = 2};
-
-            vm.SelectedManufacturer.ShouldEqual("Manufacturer3");
+            var vm = new MidiSetupViewModel(inputs);
+            vm.SelectedItem = 2;
+            inputs.Received().SelectedDevice = 2;
         }
 
         [Test]
-        public void SelectingAnItemChangesSelectedProductId()
+        public void SelectedManufacturerIsUsed()
         {
             var inputs = Substitute.For<MidiInput.IMidiInputs>();
-            inputs.DeviceNames.Returns(new[] {"Device1", "Device2", "Device3"});
-            inputs.ProductIds.Returns(new[] {100, 101, 102});
-            var vm = new MidiSetupViewModel(inputs) {SelectedItem = 2};
+            inputs.SelectedManufacturer.Returns("Manufacturer1");
+            var vm = new MidiSetupViewModel(inputs);
 
-            vm.SelectedProductId.ShouldEqual("102");
+            vm.SelectedManufacturer.ShouldEqual("Manufacturer1");
+        }
+
+        [Test]
+        public void SelectedProductIdIsUsed()
+        {
+            var inputs = Substitute.For<MidiInput.IMidiInputs>();
+            inputs.SelectedProductId.Returns(100);
+            var vm = new MidiSetupViewModel(inputs);
+
+            vm.SelectedProductId.ShouldEqual("100");
         }
 
         [Test]

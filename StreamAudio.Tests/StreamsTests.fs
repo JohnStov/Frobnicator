@@ -20,3 +20,4 @@ type StreamsTests() =
     member this.``minimum sine amplitude is -1.0``() =
         let sine = Streams.sine 44100.0 440.0 |> Seq.take 1000
         Assert.IsTrue(sine |> Seq.forall (fun x -> x >= -1.0))
+

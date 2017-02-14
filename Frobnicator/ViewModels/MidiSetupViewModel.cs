@@ -13,8 +13,6 @@ namespace Frobnicator.ViewModels
 
         private int selectedChannel;
 
-        private int selectedItem;
-
         public MidiSetupViewModel(MidiInput.IMidiInputs inputs)
         {
             this.inputs = inputs;
@@ -24,10 +22,10 @@ namespace Frobnicator.ViewModels
 
         public int SelectedItem
         {
-            get { return selectedItem; }
+            get { return inputs.SelectedDevice; }
             set
             {
-                selectedItem = value;
+                inputs.SelectedDevice = value;
                 OnPropertyChanged(nameof(SelectedItem));
                 OnPropertyChanged(nameof(SelectedManufacturer));
                 OnPropertyChanged(nameof(SelectedProductId));
@@ -47,9 +45,9 @@ namespace Frobnicator.ViewModels
             }
         }
 
-        public string SelectedManufacturer => SelectedItem < 0 ? string.Empty : inputs.Manufacturers[SelectedItem];
+        public string SelectedManufacturer => SelectedItem < 0 ? string.Empty : inputs.SelectedManufacturer;
 
-        public string SelectedProductId => SelectedItem < 0 ? string.Empty : inputs.ProductIds[SelectedItem].ToString();
+        public string SelectedProductId => SelectedItem < 0 ? string.Empty : inputs.SelectedProductId.ToString();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
