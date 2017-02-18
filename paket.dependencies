@@ -1,7 +1,1 @@
 source https://www.nuget.org/api/v2
-
-nuget ModernUI.WPF
-nuget NAudio
-nuget NSubstitute
-nuget NUnit
-nuget Should
