@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using Frobnicator.Annotations;
 using ReactiveUI;
@@ -9,12 +10,17 @@ namespace Frobnicator.ViewModels
     public class MidiSetupViewModel : ReactiveObject
     {
         private readonly MidiInput.IMidiInputs inputs;
+        private readonly MidiInput.IMidiInput input;
 
         private int selectedChannel;
 
-        public MidiSetupViewModel(MidiInput.IMidiInputs inputs)
+        public MidiSetupViewModel(MidiInput.IMidiInputs inputs, MidiInput.IMidiInput input)
         {
             this.inputs = inputs;
+            this.input = input;
+
+            isEnabled = input.PlayState.Select(x => x != AudioOutput.PlayState.Playing)
+                .ToProperty(this, x => x.IsEnabled);
         }
 
         public IEnumerable<string> DeviceNames => inputs.DeviceNames;
@@ -42,6 +48,9 @@ namespace Frobnicator.ViewModels
                 this.RaiseAndSetIfChanged(ref selectedChannel, value - 1);
             }
         }
+
+        private readonly ObservableAsPropertyHelper<bool> isEnabled;
+        public bool IsEnabled => isEnabled.Value;
 
         public string SelectedManufacturer => SelectedItem < 0 ? string.Empty : inputs.SelectedManufacturer;
 
