@@ -1,1 +1,16 @@
 source https://www.nuget.org/api/v2
+nuget ModernUI.WPF 1.0.9 framework: >= net45
+nuget NAudio 1.8.0 framework: >= net45
+nuget NSubstitute 1.10.0.0 framework: >= net45
+nuget NUnit 3.5.0 framework: >= net45
+nuget reactiveui 7.1.0 framework: >= net45
+nuget reactiveui-core 7.1.0 framework: >= net45
+nuget Rx-Core 2.2.5 framework: >= net45
+nuget Rx-Interfaces 2.2.5 framework: >= net45
+nuget Rx-Linq 2.2.5 framework: >= net45
+nuget Rx-Main 2.2.5 framework: >= net45
+nuget Rx-PlatformServices 2.2.5 framework: >= net45
+nuget Rx-XAML 2.2.5 framework: >= net45
+nuget Should 1.1.20 framework: >= net45
+nuget Splat 1.4.0 framework: >= net45
+nuget System.ValueTuple 4.3.0 framework: >= net452

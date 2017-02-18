@@ -1,1 +1,31 @@
-
+NUGET
+  remote: https://www.nuget.org/api/v2
+    ModernUI.WPF (1.0.9) - framework: >= net45
+    NAudio (1.8) - framework: >= net45
+    NSubstitute (1.10) - framework: >= net45
+    NUnit (3.5) - framework: >= net45
+    reactiveui (7.1) - framework: >= net45
+      reactiveui-core (7.1)
+    reactiveui-core (7.1) - framework: >= net45
+      Rx-Main (>= 2.2.5) - framework: >= net45, >= netstandard12, portable-win81+wpa81, winv4.5
+      Rx-Xaml (>= 2.2.5) - framework: >= net45, >= netstandard12, portable-win81+wpa81, winv4.5
+      Splat (>= 1.4 < 2.0) - framework: >= net45, >= netstandard12, portable-win81+wpa81, winv4.5
+    Rx-Core (2.2.5) - framework: >= net45
+      Rx-Interfaces (>= 2.2.5)
+    Rx-Interfaces (2.2.5) - framework: >= net45
+    Rx-Linq (2.2.5) - framework: >= net45
+      Rx-Core (>= 2.2.5)
+      Rx-Interfaces (>= 2.2.5)
+    Rx-Main (2.2.5) - framework: >= net45
+      Rx-Core (>= 2.2.5)
+      Rx-Interfaces (>= 2.2.5)
+      Rx-Linq (>= 2.2.5)
+      Rx-PlatformServices (>= 2.2.5)
+    Rx-PlatformServices (2.2.5) - framework: >= net45
+      Rx-Core (>= 2.2.5)
+      Rx-Interfaces (>= 2.2.5)
+    Rx-Xaml (2.2.5) - framework: >= net45
+      Rx-Main (>= 2.2.5)
+    Should (1.1.20) - framework: >= net45
+    Splat (1.4) - framework: >= net45
+    System.ValueTuple (4.3) - framework: >= net452
