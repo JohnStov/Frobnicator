@@ -17,6 +17,7 @@ type IMidiInput =
     abstract member Start : unit -> unit
     abstract member Stop : unit -> unit
     abstract member PlayState : IObservable<AudioOutput.PlayState>
+    abstract member MidiData : IObservable<MidiEvent>
 
 type MidiInput() = 
     let deviceInfo =
@@ -48,6 +49,11 @@ type MidiInput() =
             midiIn.Start()
 
         member this.Stop () =
-            if midiIn = null then midiIn.Stop()
+            if midiIn = null 
+            then 
+                midiIn.Stop()
         
         member this.PlayState = playStateChanged.Publish :> IObservable<AudioOutput.PlayState>
+
+        member this.MidiData = midiIn.MessageReceived |> Observable.map(fun x -> x.MidiEvent)
+
