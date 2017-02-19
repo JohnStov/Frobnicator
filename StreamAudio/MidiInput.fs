@@ -13,7 +13,13 @@ type IMidiInputs =
     abstract member SelectedProductId : int
     abstract member SelectedDevice : int with get, set
 
-type MidiInputs() = 
+type IMidiInput =
+    abstract member Start : unit -> unit
+    abstract member Stop : unit -> unit
+    abstract member PlayState : IObservable<AudioOutput.PlayState>
+    abstract member MidiData : IObservable<MidiEvent>
+
+type MidiInput() = 
     let deviceInfo =
         let deviceCount = MidiIn.NumberOfDevices
         match deviceCount with 
@@ -22,6 +28,12 @@ type MidiInputs() =
 
     let mutable selectedDevice = 0
 
+    let playStateChanged = new Event<AudioOutput.PlayState> ()
+
+    let mutable midiIn : MidiIn = null;
+
+    do playStateChanged.Trigger AudioOutput.PlayState.Stopped
+
     interface IMidiInputs with
         member this.DeviceNames with get() = deviceInfo |> List.map (fun info -> info.ProductName) |> List.toArray
         member this.SelectedManufacturer with get() = deviceInfo.[selectedDevice].Manufacturer.ToString()
@@ -29,3 +41,19 @@ type MidiInputs() =
         member this.SelectedDevice
             with get() = selectedDevice
             and set(value) = selectedDevice <- value
+
+    interface IMidiInput with
+        member this.Start () = 
+            if midiIn <> null then midiIn.Dispose()
+            midiIn <- new MidiIn(selectedDevice)
+            midiIn.Start()
+
+        member this.Stop () =
+            if midiIn = null 
+            then 
+                midiIn.Stop()
+        
+        member this.PlayState = playStateChanged.Publish :> IObservable<AudioOutput.PlayState>
+
+        member this.MidiData = midiIn.MessageReceived |> Observable.map(fun x -> x.MidiEvent)
+

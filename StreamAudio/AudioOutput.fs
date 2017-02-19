@@ -20,19 +20,17 @@ let getWaveSeqProvider (sampleRate : float) (stream : float seq) =
           WaveFormat.CreateIeeeFloatWaveFormat((int)sampleRate, channelCount) 
     }
 
+type PlayState = Stopped = 0 | Paused = 1 | Playing  = 2
+
 type IAudioDevices =
     abstract member DeviceNames : string array
     abstract member SelectedDevice : int with get, set
-
-type PlayStateChanged = delegate of obj * EventArgs -> unit
 
 type IPlaybackDevice =
     abstract member Start : unit-> unit
     abstract member Stop : unit-> unit
     abstract member Pause : unit-> unit
-    abstract member IsPlaying : unit-> bool
-    [<CLIEvent>]
-    abstract member PlayStateChanged : IEvent<PlayStateChanged, EventArgs>
+    abstract member PlayState : IObservable<PlayState>
 
 type AudioOutput (sampleRate) =
     let deviceInfo =
@@ -44,7 +42,9 @@ type AudioOutput (sampleRate) =
     let waveOut = new WaveOutEvent()
     let mutable selectedDevice = 0
     
-    let playStateChanged = new Event<PlayStateChanged, EventArgs>()
+    let playStateChanged = new Event<PlayState>()
+
+    do playStateChanged.Trigger PlayState.Stopped
     
     interface IAudioDevices with
         member this.DeviceNames = 
@@ -60,22 +60,15 @@ type AudioOutput (sampleRate) =
             waveOut.DeviceNumber <- selectedDevice
             waveOut.Init(provider)
             waveOut.Play()
-            playStateChanged.Trigger(this, new EventArgs())
+            playStateChanged.Trigger PlayState.Playing
         
         member this.Stop () =
             waveOut.Stop()
-            playStateChanged.Trigger(this, new EventArgs())
+            playStateChanged.Trigger PlayState.Stopped
     
         member this.Pause () =
             waveOut.Pause()
-            playStateChanged.Trigger(this, new EventArgs())
+            playStateChanged.Trigger PlayState.Paused
 
-        member this.IsPlaying () =
-            if waveOut <> null then
-                waveOut.PlaybackState = PlaybackState.Playing
-            else
-                false
-        
-        [<CLIEvent>]
-        member this.PlayStateChanged = playStateChanged.Publish
+        member this.PlayState = playStateChanged.Publish :> IObservable<PlayState>
 

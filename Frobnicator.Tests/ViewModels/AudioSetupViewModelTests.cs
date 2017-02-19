@@ -1,4 +1,5 @@
-﻿using Frobnicator.ViewModels;
+﻿using System.Reactive.Subjects;
+using Frobnicator.ViewModels;
 using NSubstitute;
 using NUnit.Framework;
 using Should;
@@ -33,9 +34,11 @@ namespace Frobnicator.Tests.ViewModels
         public void IsDisabledWhenPlaying()
         {
             var device = Substitute.For<AudioOutput.IPlaybackDevice>();
-            device.IsPlaying().Returns(true);
+            var subject = new Subject<AudioOutput.PlayState>();
+            device.PlayState.Returns(subject);
             var vm = new AudioSetupViewModel(null, device);
 
+            subject.OnNext(AudioOutput.PlayState.Playing);
             vm.IsEnabled.ShouldBeFalse();
         }
 
@@ -43,9 +46,11 @@ namespace Frobnicator.Tests.ViewModels
         public void IsEnabledWhenNotPlaying()
         {
             var device = Substitute.For<AudioOutput.IPlaybackDevice>();
-            device.IsPlaying().Returns(false);
+            var subject = new Subject<AudioOutput.PlayState>();
+            device.PlayState.Returns(subject);
             var vm = new AudioSetupViewModel(null, device);
 
+            subject.OnNext(AudioOutput.PlayState.Stopped);
             vm.IsEnabled.ShouldBeTrue();
         }
 

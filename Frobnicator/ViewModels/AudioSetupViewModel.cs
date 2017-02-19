@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using Frobnicator.Annotations;
+using ReactiveUI;
 
 namespace Frobnicator.ViewModels
 {
-    public class AudioSetupViewModel : INotifyPropertyChanged
+    public class AudioSetupViewModel : ReactiveObject
     {
         private readonly AudioOutput.IPlaybackDevice device;
 
@@ -17,7 +19,7 @@ namespace Frobnicator.ViewModels
             this.devices = devices;
             this.device = device;
 
-            device.PlayStateChanged += OnPlayStateChanged;
+            isEnabled = device.PlayState.Select(x => x != AudioOutput.PlayState.Playing).ToProperty(this, x => x.IsEnabled);
         }
 
         public IEnumerable<string> DeviceNames => devices.DeviceNames;
@@ -28,22 +30,11 @@ namespace Frobnicator.ViewModels
             set
             {
                 devices.SelectedDevice = value;
-                OnPropertyChanged(nameof(SelectedItem));
+                this.RaisePropertyChanged();
             }
         }
 
-        public bool IsEnabled => !device.IsPlaying();
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPlayStateChanged(object obj0, EventArgs obj1)
-        {
-            OnPropertyChanged(nameof(IsEnabled));
-        }
-
-        [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        private ObservableAsPropertyHelper<bool> isEnabled;
+        public bool IsEnabled => isEnabled.Value;
     }
 }
