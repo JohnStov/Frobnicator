@@ -6,14 +6,8 @@ namespace Frobnicator.ViewModels
 {
     public class PlaybackViewModel
     {
-        private readonly AudioOutput.IPlaybackDevice playback;
-        private readonly MidiInput.IMidiInput midiIn;
-
         public PlaybackViewModel(AudioOutput.IPlaybackDevice playback, MidiInput.IMidiInput midiIn)
         {
-            this.playback = playback;
-            this.midiIn = midiIn;
-
             StartCommand = ReactiveCommand.Create(() => { playback.Start(); midiIn.Start(); },
                 playback.PlayState.Select(x => x != AudioOutput.PlayState.Playing));
             StopCommand = ReactiveCommand.Create(() => { playback.Stop(); midiIn.Stop(); },

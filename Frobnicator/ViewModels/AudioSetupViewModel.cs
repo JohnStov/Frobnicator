@@ -10,16 +10,15 @@ namespace Frobnicator.ViewModels
 {
     public class AudioSetupViewModel : ReactiveObject
     {
-        private readonly AudioOutput.IPlaybackDevice device;
-
         private readonly AudioOutput.IAudioDevices devices;
 
         public AudioSetupViewModel(AudioOutput.IAudioDevices devices, AudioOutput.IPlaybackDevice device)
         {
             this.devices = devices;
-            this.device = device;
 
             isEnabled = device.PlayState.Select(x => x != AudioOutput.PlayState.Playing).ToProperty(this, x => x.IsEnabled);
+
+            device.Stop();
         }
 
         public IEnumerable<string> DeviceNames => devices.DeviceNames;

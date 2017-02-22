@@ -10,17 +10,17 @@ namespace Frobnicator.ViewModels
     public class MidiSetupViewModel : ReactiveObject
     {
         private readonly MidiInput.IMidiInputs inputs;
-        private readonly MidiInput.IMidiInput input;
-
+        
         private int selectedChannel;
 
         public MidiSetupViewModel(MidiInput.IMidiInputs inputs, MidiInput.IMidiInput input)
         {
             this.inputs = inputs;
-            this.input = input;
-
+        
             isEnabled = input.PlayState.Select(x => x != AudioOutput.PlayState.Playing)
                 .ToProperty(this, x => x.IsEnabled);
+
+            input.Stop();
         }
 
         public IEnumerable<string> DeviceNames => inputs.DeviceNames;

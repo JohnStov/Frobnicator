@@ -47,11 +47,11 @@ type MidiInput() =
             if midiIn <> null then midiIn.Dispose()
             midiIn <- new MidiIn(selectedDevice)
             midiIn.Start()
+            playStateChanged.Trigger AudioOutput.PlayState.Playing
 
         member this.Stop () =
-            if midiIn = null 
-            then 
-                midiIn.Stop()
+            if midiIn <> null then midiIn.Stop()
+            playStateChanged.Trigger AudioOutput.PlayState.Stopped
         
         member this.PlayState = playStateChanged.Publish :> IObservable<AudioOutput.PlayState>
 
