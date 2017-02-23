@@ -1,7 +1,8 @@
 ﻿module AudioOutput
 
 open NAudio.Wave
-open System 
+open System
+open System.Reactive.Subjects
 
 let getWaveSeqProvider (sampleRate : float) (stream : float seq) =
     let channelCount = 1
@@ -42,10 +43,8 @@ type AudioOutput (sampleRate) =
     let waveOut = new WaveOutEvent()
     let mutable selectedDevice = 0
     
-    let playStateChanged = new Event<PlayState>()
+    let playState = new BehaviorSubject<PlayState>(PlayState.Stopped)
 
-    do playStateChanged.Trigger PlayState.Stopped
-    
     interface IAudioDevices with
         member this.DeviceNames = 
             deviceInfo |> List.map (fun info -> info.ProductName) |> List.toArray
@@ -60,15 +59,15 @@ type AudioOutput (sampleRate) =
             waveOut.DeviceNumber <- selectedDevice
             waveOut.Init(provider)
             waveOut.Play()
-            playStateChanged.Trigger PlayState.Playing
+            playState.OnNext PlayState.Playing
         
         member this.Stop () =
             waveOut.Stop()
-            playStateChanged.Trigger PlayState.Stopped
+            playState.OnNext PlayState.Stopped
     
         member this.Pause () =
             waveOut.Pause()
-            playStateChanged.Trigger PlayState.Paused
+            playState.OnNext PlayState.Paused
 
-        member this.PlayState = playStateChanged.Publish :> IObservable<PlayState>
+        member this.PlayState = playState :> IObservable<PlayState>
 

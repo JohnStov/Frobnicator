@@ -17,8 +17,6 @@ namespace Frobnicator.ViewModels
             this.devices = devices;
 
             isEnabled = device.PlayState.Select(x => x != AudioOutput.PlayState.Playing).ToProperty(this, x => x.IsEnabled);
-
-            device.Stop();
         }
 
         public IEnumerable<string> DeviceNames => devices.DeviceNames;

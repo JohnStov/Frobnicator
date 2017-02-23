@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.Reactive.Linq;
-using System.Runtime.CompilerServices;
-using Frobnicator.Annotations;
 using ReactiveUI;
 
 namespace Frobnicator.ViewModels
@@ -19,8 +16,6 @@ namespace Frobnicator.ViewModels
         
             isEnabled = input.PlayState.Select(x => x != AudioOutput.PlayState.Playing)
                 .ToProperty(this, x => x.IsEnabled);
-
-            input.Stop();
         }
 
         public IEnumerable<string> DeviceNames => inputs.DeviceNames;
