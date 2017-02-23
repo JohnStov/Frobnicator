@@ -1,6 +1,7 @@
 ﻿module AudioOutput
 
 open NAudio.Wave
+open NAudio.Midi
 open System
 open System.Reactive.Subjects
 
@@ -28,9 +29,9 @@ type IAudioDevices =
     abstract member SelectedDevice : int with get, set
 
 type IPlaybackDevice =
-    abstract member Start : unit-> unit
-    abstract member Stop : unit-> unit
-    abstract member Pause : unit-> unit
+    abstract member Start : IObservable<MidiEvent> -> unit
+    abstract member Stop : unit -> unit
+    abstract member Pause : unit -> unit
     abstract member PlayState : IObservable<PlayState>
 
 type AudioOutput (sampleRate) =
@@ -54,8 +55,8 @@ type AudioOutput (sampleRate) =
             and set(value) = selectedDevice <- value
             
     interface IPlaybackDevice with
-        member this.Start () =
-            let provider = getWaveSeqProvider sampleRate (Streams.sine sampleRate 440.0)    
+        member this.Start (notes : IObservable<MidiEvent>)  =
+            let provider = getWaveSeqProvider sampleRate (notes |> Streams.noteFreqStream |> Streams.sineStream sampleRate)    
             waveOut.DeviceNumber <- selectedDevice
             waveOut.Init(provider)
             waveOut.Play()

@@ -1,6 +1,6 @@
-﻿using System.Reactive.Linq;
+﻿using ReactiveUI;
+using System.Reactive.Linq;
 using System.Windows.Input;
-using ReactiveUI;
 
 namespace Frobnicator.ViewModels
 {
@@ -8,7 +8,7 @@ namespace Frobnicator.ViewModels
     {
         public PlaybackViewModel(AudioOutput.IPlaybackDevice playback, MidiInput.IMidiInput midiIn)
         {
-            StartCommand = ReactiveCommand.Create(() => { playback.Start(); midiIn.Start(); },
+            StartCommand = ReactiveCommand.Create(() => { playback.Start(midiIn.MidiData); midiIn.Start(); },
                 playback.PlayState.Select(x => x != AudioOutput.PlayState.Playing));
             StopCommand = ReactiveCommand.Create(() => { playback.Stop(); midiIn.Stop(); },
                 playback.PlayState.Select(x => x == AudioOutput.PlayState.Playing));

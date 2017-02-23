@@ -4,10 +4,6 @@ open NAudio.Midi
 open System
 open System.Reactive.Subjects
 
-// Taken from http://newt.phys.unsw.edu.au/jw/notes.html
-let public midiNoteToFrequency (noteNumber : int) : float =
-    Math.Pow(2.0, (float (noteNumber - 69)) / 12.0) * 440.0
-
 type IMidiInputs =
     abstract member DeviceNames : string array
     abstract member SelectedManufacturer : string
@@ -31,6 +27,10 @@ type MidiInput() =
 
     let playState = new BehaviorSubject<AudioOutput.PlayState> (AudioOutput.PlayState.Stopped)
 
+    let midiData = new Subject<MidiEvent>()
+
+    let mutable midiDataSubscription : IDisposable = null;
+
     let mutable midiIn : MidiIn = null;
 
     interface IMidiInputs with
@@ -45,14 +45,24 @@ type MidiInput() =
         member this.Start () = 
             if midiIn <> null then midiIn.Dispose()
             midiIn <- new MidiIn(selectedDevice)
+            midiDataSubscription <- (midiIn.MessageReceived |> Observable.map(fun x -> x.MidiEvent)).Subscribe(midiData)
             midiIn.Start()
             playState.OnNext AudioOutput.PlayState.Playing
 
         member this.Stop () =
-            if midiIn <> null then midiIn.Stop()
+            if midiDataSubscription <> null 
+            then 
+                midiDataSubscription.Dispose()
+                midiDataSubscription <- null
+
+            if midiIn <> null 
+            then 
+                midiIn.Stop()
+                midiIn.Dispose()
+                midiIn <- null
+
             playState.OnNext AudioOutput.PlayState.Stopped
         
         member this.PlayState = playState :> IObservable<AudioOutput.PlayState>
 
-        member this.MidiData = midiIn.MessageReceived |> Observable.map(fun x -> x.MidiEvent)
-
+        member this.MidiData = midiData :> IObservable<MidiEvent>

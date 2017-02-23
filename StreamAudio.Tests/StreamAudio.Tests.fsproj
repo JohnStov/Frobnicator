@@ -55,7 +55,6 @@
     <Compile Include="StreamsTests.fs" />
     <None Include="Script.fsx" />
     <None Include="paket.references" />
-    <Compile Include="MidiInputTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />

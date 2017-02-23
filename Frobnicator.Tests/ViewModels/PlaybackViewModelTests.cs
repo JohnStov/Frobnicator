@@ -1,7 +1,8 @@
-﻿using System.Reactive.Subjects;
-using Frobnicator.ViewModels;
+﻿using Frobnicator.ViewModels;
+using NAudio.Midi;
 using NSubstitute;
 using NUnit.Framework;
+using System;
 
 namespace Frobnicator.Tests.ViewModels
 {
@@ -13,10 +14,11 @@ namespace Frobnicator.Tests.ViewModels
         {
             var device = Substitute.For<AudioOutput.IPlaybackDevice>();
             var midi = Substitute.For<MidiInput.IMidiInput>();
+            midi.MidiData.Returns(Substitute.For<IObservable<MidiEvent>>());
             var vm = new PlaybackViewModel(device, midi);
 
             vm.StartCommand.Execute(null);
-            device.Received().Start();
+            device.Received().Start(midi.MidiData);
             midi.Received().Start();
         }
 
@@ -25,6 +27,7 @@ namespace Frobnicator.Tests.ViewModels
         {
             var device = Substitute.For<AudioOutput.IPlaybackDevice>();
             var midi = Substitute.For<MidiInput.IMidiInput>();
+            midi.MidiData.Returns(Substitute.For<IObservable<MidiEvent>>());
             var vm = new PlaybackViewModel(device, midi);
 
             vm.StopCommand.Execute(null);
